@@ -12,7 +12,7 @@ app.get("/*", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-server.listen(PORT, () =>{
+server.listen(process.env.PORT || PORT, () =>{
     console.log("http://127.0.0.1:" + PORT + "/");
 });
 
