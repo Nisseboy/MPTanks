@@ -9,16 +9,11 @@
       channel:
       <input id="channelIn" type="text" value="">
     </div>
-    <div>
-      name:
-      <input id="nameIn" type="text" value="">
-    </div>
     <button type="button" onclick="join()">join</button>
 
     <script type="text/javascript">
       function join() {
         let c = channelIn.value;
-        let n = nameIn.value;
 
         if (c == "") {
           alert("specify channel");

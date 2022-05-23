@@ -17,7 +17,6 @@ const rects = [[0, 0, 600, 10], [0, 0, 10, 600], [590, 0, 10, 600], [0, 590, 600
 let players = [];
 let bullets = [];
 let me;
-let lastShot = new Date().getTime() - bulletCooldown;
 let mag = 5;
 
 let pressedKeys = [];
@@ -51,14 +50,6 @@ function draw() {
     if (pressedKeys[39]) { //right
       me.a += turnSpeed;
       move(0);
-    }
-    if (pressedKeys[32]) { //space
-      if (time - lastShot > bulletCooldown && mag > 0) {
-        lastShot = time;
-        mag--;
-        shoot();
-        move(0);
-      }
     }
   }
 
@@ -169,6 +160,13 @@ function toCam(pos) {
 
 function keyPressed() {
   pressedKeys[keyCode] = true;
+  if (keyCode == 32) { //space
+    if (mag > 0) {
+      mag--;
+      shoot();
+      move(0);
+    }
+  }
 }
 
 function keyReleased() {
@@ -176,18 +174,29 @@ function keyReleased() {
 }
 
 class Player {
-  constructor(color, id, lastMoved = new Date().getTime(), x = width / 2, y = height / 2) {
+  constructor(color, id, lastMoved = new Date().getTime(), x = "s", y = "s") {
     this.color = color;
     this.id = id;
     this.lastMoved = lastMoved;
 
     this.alive = true;
-
-    this.pos = createVector(x, y);
+    if (x == "s") {
+      this.pos = findPos();
+    } else {
+      this.pos = createVector(x, y);
+    }
     this.a = random(TWO_PI);
   }
 }
 
+function findPos() {
+  let pos = createVector(random(width), random(height));
+  if (inWall(pos.x, pos.y, playerR)) {
+    return findPos();
+  } else {
+    return pos;
+  }
+}
 
 on("move", (data) => {
   let matched = false;
