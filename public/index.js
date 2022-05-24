@@ -142,6 +142,7 @@ function move(d) {
 function keyPressed() {
   pressedKeys[keyCode] = true;
   if (me && me.alive && keyCode == 32 && mag > 0) { //space
+    mag--;
     let bullet = {
       x: me.pos.x + cos(me.a) * barrelLength,
       y: me.pos.y + sin(me.a) * barrelLength,
@@ -239,7 +240,7 @@ function emit(channel, data) {
 
 function on(channel, callback) {
   socket.on(channel, (data) => {
-    if (data.channel = channel) {
+    if (data.lobby == lobby) {
       callback(data);
     }
   });
